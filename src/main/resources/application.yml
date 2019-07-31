@@ -1,0 +1,14 @@
+spring:
+ cloud: 
+    gateway:
+      routes:
+      - id: greeting-service
+        uri: http://localhost:8091
+        predicates:
+        - Path=/greeting/helloworld
+        filters:
+        - name: RequestRateLimiter
+          args:
+            key-resolver: "#{@userRemoteAddressResolver}"
+            redis-rate-limiter.replenishRate: 1
+            redis-rate-limiter.burstCapacity: 1
